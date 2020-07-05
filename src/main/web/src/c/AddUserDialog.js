@@ -34,6 +34,7 @@ class AddUserDialog extends Component{
             password: this.state.credentials.password
         }).then( res => {
             this.props.reload()
+	    this.hideDialog()
         }, (error) => {
             this.setState({
                 // data: error,
@@ -42,7 +43,6 @@ class AddUserDialog extends Component{
 		errorMsg: error.toString()
             })
         })
-        this.hideDialog()
     }
 
     openDialog = () => {
