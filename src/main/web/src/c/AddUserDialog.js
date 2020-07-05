@@ -4,6 +4,8 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogActions from '@material-ui/core/DialogActions/DialogActions'
+import Fab from '@material-ui/core/Fab'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog/Dialog'
 import {AddUserUrl} from './GmhUrl'
@@ -14,6 +16,7 @@ class AddUserDialog extends Component{
     constructor(props) {
         super(props)
         this.state = {
+	    openAddDialog: false,
             credentials : {
                 login: '',
                 password: '',
@@ -21,7 +24,7 @@ class AddUserDialog extends Component{
             }
         }
     }
-    
+
     addUser = () => {
         let url = AddUserUrl()
         axios.post(url,{
@@ -40,6 +43,18 @@ class AddUserDialog extends Component{
         this.props.hide()
     }
 
+    openDialog = () => {
+        this.setState({
+            openAddDialog: true
+        })
+    }
+
+    hideDialog = () => {
+        this.setState({
+            openAddDialog: false
+        })
+    }
+
     handleChange = (event) => {
         let credentials = this.state.credentials
         credentials[event.target.name] = event.target.value
@@ -51,7 +66,12 @@ class AddUserDialog extends Component{
 
     render() {
         return (
-                <Dialog open={this.props.show} onClose={this.props.hide} aria-labelledby="form-dialog-title">
+	<>
+		<Fab variant="extended" onClick={this.openDialog} style={{float:'right'}}>
+			<PersonAddIcon/>
+			Add User
+		</Fab>
+                <Dialog open={this.state.openAddDialog} onClose={this.hideDialog} aria-labelledby="form-dialog-title">
                     <ValidatorForm onSubmit={this.addUser}>
                         <DialogTitle id="form-dialog-title">Add User</DialogTitle>
                         <DialogContent>
@@ -93,7 +113,7 @@ class AddUserDialog extends Component{
 
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={this.props.hide} color="primary">
+                            <Button onClick={this.hideDialog} color="primary">
                                 Cancel
                             </Button>
                             <Button type="submit" color="primary">
@@ -102,6 +122,7 @@ class AddUserDialog extends Component{
                         </DialogActions>
                     </ValidatorForm>
                 </Dialog>
+	</>
         )
     }
 }
