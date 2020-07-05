@@ -17,6 +17,7 @@ class AddUserDialog extends Component{
         super(props)
         this.state = {
 	    openAddDialog: false,
+	    errorMsg: '',
             credentials : {
                 login: '',
                 password: '',
@@ -35,15 +36,17 @@ class AddUserDialog extends Component{
             this.props.reload()
         }, (error) => {
             this.setState({
-                data: error,
-                url: url,
-                error: true
+                // data: error,
+                // url: url,
+                // error: true
+		errorMsg: error.toString()
             })
         })
-        this.props.hide()
+        this.hideDialog()
     }
 
     openDialog = () => {
+	    console.log('===open')
         this.setState({
             openAddDialog: true
         })
@@ -65,13 +68,27 @@ class AddUserDialog extends Component{
 
 
     render() {
-        return (
+	    const cChildren = React.Children.map(this.props.children, (el, idx) => {
+		    return React.cloneElement(el, { onClick: this.openDialog })
+	    })
+
+	return (
 	<>
+	{/*
 		<Fab variant="extended" onClick={this.openDialog} style={{float:'right'}}>
 			<PersonAddIcon/>
 			Add User
 		</Fab>
+	*/}
+	{/*
+	<div onClick={this.openDialog}>
+	{this.props.children}
+	</div>
+	*/}
+		{cChildren}
                 <Dialog open={this.state.openAddDialog} onClose={this.hideDialog} aria-labelledby="form-dialog-title">
+		    <div>{this.state.errorMsg}</div>
+
                     <ValidatorForm onSubmit={this.addUser}>
                         <DialogTitle id="form-dialog-title">Add User</DialogTitle>
                         <DialogContent>

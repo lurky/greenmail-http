@@ -13,6 +13,9 @@ import ListUserRow from './ListUserRow'
 import PageHeader from '../m/PageHeader'
 import AddUserDialog from '../c/AddUserDialog'
 
+import Fab from '@material-ui/core/Fab'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
+
 class ListUserPage extends Component {
 
 	constructor(props) {
@@ -58,7 +61,12 @@ class ListUserPage extends Component {
 			<div>
 				<PageHeader title="All Users"/>
 				<Paper>
-                    			<AddUserDialog reload={this.reload}/>
+                    			<AddUserDialog reload={this.reload}>
+						<Fab variant="extended" style={{float:'right'}}>
+							<PersonAddIcon/>
+							Add User
+						</Fab>
+					</AddUserDialog>
 
 					<Table>
 						<TableHead>
